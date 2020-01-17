@@ -1,0 +1,22 @@
+#
+# ~/.gitconfig
+#
+
+[color]
+	ui = auto
+[alias]
+	s = status
+	c = commit
+	a = add
+	b = branch
+	r = restore
+	rs = restore --staged
+	lg = log --graph
+	lgs = log --graph --show-signature
+[user]
+	email = jolinzhou90@gmail.com
+	name = jiulingz
+[core]
+	excludesfile = ~/.gitignore
+[commit]
+	gpgsign = true

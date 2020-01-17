@@ -1,0 +1,37 @@
+#
+# ~/.inputrc
+#
+
+$include /etc/inputrc
+
+#==============================================================================
+# editing mode
+#==============================================================================
+set editing-mode vi
+set show-mode-in-prompt on
+$if term=linux
+	set vi-ins-mode-string \1\e[?2c\2
+	set vi-cmd-mode-string \1\e[?6c\2
+$else
+	set vi-ins-mode-string \1\e[3 q\2
+	set vi-cmd-mode-string \1\e[1 q\2
+$endif
+
+$if mode=vi
+	# these are for vi-command mode
+	set keymap vi-command
+	"\e[A": history-search-backward
+	"\e[B": history-search-forward
+	# these are for vi-insert mode
+	set keymap vi-insert
+	"\e[A": history-search-backward
+	"\e[B": history-search-forward
+$endif
+
+#==============================================================================
+# navigation
+#==============================================================================
+"\e[1~": beginning-of-line		# Home key
+"\e[4~": end-of-line			# End key
+"\e[5~": backward-word			# PageUp key
+"\e[6~": forward-word			# PageDown key

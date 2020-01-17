@@ -1,0 +1,103 @@
+#
+# ~/.bashrc
+#
+
+#==============================================================================
+# interactivity check
+#==============================================================================
+[[ $- != *i* ]] && return
+
+#==============================================================================
+# alias
+#==============================================================================
+alias ls='ls --color=auto'
+
+alias ll='ls -l'
+alias la='ls -A'
+alias lla='ls -lA'
+alias l='ls -CF'
+alias lv='ls -v'
+
+alias smlnj='rlwrap smlnj'
+alias sml='rlwrap sml'
+
+#==============================================================================
+# history
+#==============================================================================
+export HISTCONTROL=ignoredups
+export HISTSIZE=1000
+export HISTFILESIZE=2000
+
+#==============================================================================
+# bash-completion
+#==============================================================================
+if ! shopt -oq posix; then
+	if [ -f /usr/share/bash-completion/bash_completion ]; then
+		source /usr/share/bash-completion/bash_completion
+	elif [ -f /etc/bash_completion ]; then
+		source /etc/bash_completion
+	fi
+fi
+
+#==============================================================================
+# prompt
+#==============================================================================
+if [ -f /usr/share/git/git-prompt.sh ]; then
+	source /usr/share/git/git-prompt.sh
+else
+	source $HOME/.common_config/git/git-prompt.sh
+fi
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWCOLORHINTS=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_IGNORESUBMODULES=1
+GIT_PS1_SHOWUPSTREAM='verbose'
+
+function get_prompt {
+	__git_ps1 "\[\033[00;32m\]\u@\h\[\033[00m\]:\[\033[00;94m\]\W\[\033[00m\]" "\$ "
+	 [ -n "${VIRTUAL_ENV-}" ] && PS1="\[\e[1;32m\]($(basename "$VIRTUAL_ENV"))\[\e[m\] $PS1"
+}
+PROMPT_COMMAND='get_prompt'
+
+#==============================================================================
+# shell options
+#==============================================================================
+# auto cd when only a directory is entered
+shopt -s autocd
+# checks the window size after each command
+shopt -s checkwinsize
+# umask
+umask 0027
+
+#==============================================================================
+# environment variables
+#==============================================================================
+export EDITOR=vim
+export VISUAL=vim
+export TERM=xterm-256color
+
+#==============================================================================
+# command not found
+#==============================================================================
+# search the official repositories, when entering an unrecognized command
+if [ -f /usr/share/doc/pkgfile/command-not-found.bash ]; then
+	source /usr/share/doc/pkgfile/command-not-found.bash
+fi
+
+#==============================================================================
+# remount with metadata (Windows only)
+#==============================================================================
+if grep -q Microsoft /proc/version; then
+	function remount () {
+		local WORK_DIR='/mnt/c/Users/ecdeo/Workspace'
+		cd $HOME
+		sudo umount /mnt/c
+		sudo mount -t drvfs C: /mnt/c -o metadata,uid=1000,gid=1000,umask=0022,fmask=0011
+		find $RESERVED_DIR -type f -exec chmod 640 {} +
+		cd - > /dev/null
+	}
+	function mmount () {
+		sudo mount -t drvfs C: /mnt/c -o metadata,uid=1000,gid=1000,umask=0022,fmask=0011
+		find $RESERVED_DIR -type f -exec chmod 640 {} +
+	}
+fi
