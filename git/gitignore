@@ -29,4 +29,5 @@ __latexindent_temp.tex
 # IDE config
 #==============================================================================
 .vscode/
+*.code-workspace
 .idea/
