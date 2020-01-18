@@ -10,14 +10,18 @@ min_r=ff
 min_g=00
 min_b=60
 
-# acpi info
-acpi=$(acpi)
-battery="$(echo "$acpi" | grep -Po '\d+\%' | grep -Po '\d+')"
-if (echo "$acpi" | grep 'Charging')
-then
-	battery_str="$battery%+"
+# battery info
+if [ -x "$(command -v acpi)" ]; then
+	acpi=$(acpi)
+	battery="$(echo "$acpi" | grep -Po '\d+\%' | grep -Po '\d+')"
+	if (echo "$acpi" | grep 'Charging'); then
+		battery_str="$battery%+"
+	else
+		battery_str="$battery% "
+	fi
 else
-	battery_str="$battery% "
+	battery=50
+	battery_str="n/a "
 fi
 
 # battery color calculation
