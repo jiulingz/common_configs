@@ -1,34 +1,39 @@
-MAKEFLAGS = iks
+MAKEFLAGS = s
 
 targets = bashrc bash_profile gitconfig gitignore inputrc vimrc tmux.conf
-build_targets = $(foreach t, $(targets), $t_build)
-clean_targets = $(foreach t, $(targets), $t_clean)
-diff_targets = $(foreach t, $(targets), $t_diff)
-
-_divider = \
-	printf "%0.s=" {1..$(shell tput cols)}; printf "\n";
-
-_build = $(_divider) \
-	if [ -f "$(DEST_FILE)" ]; then mv -v "$(DEST_FILE)" "$(BAK_FILE)"; fi; \
-	cp -v "$(SRC_FILE)" "$(DEST_FILE)";
-
-_clean = \
-	if [ -f "$(BAK_FILE)" ]; then rm -v "$(BAK_FILE)"; fi;
-
-_diff  = $(_divider) \
-	printf '%-20s%s\n' "$(SRC_FILE)" "$(DEST_FILE)"; \
-	diff "$(DEST_FILE)" "$(SRC_FILE)";
-
-.PHONY: all build $(build_targets) clean $(clean_targets) diff $(diff_targets)
-all:
-	echo Please specify target
+build_targets = $(addsuffix .build, $(targets))
+clean_targets = $(addsuffix .clean, $(targets))
+diff_targets  = $(addsuffix .diff,  $(targets))
 
 #==============================================================================
 # batch operation
 #==============================================================================
+.PHONY: all build $(build_targets) clean $(clean_targets) diff $(diff_targets)
+all:
+	echo Please specify target
+
 build: $(build_targets)
 clean: $(clean_targets)
 diff:  $(diff_targets)
+
+divider = printf "%0.s=" {1..$(shell tput cols)}; printf "\n"
+
+%_build:
+	$(divider)
+	if [ -f "$(BAK_FILE)" ]; then \
+		echo "$(BAK_FILE)" already exits!!!!!!!!!!!!!; \
+	else \
+		if [ -f "$(DEST_FILE)" ]; then mv -v "$(DEST_FILE)" "$(BAK_FILE)"; fi; \
+		cp -v "$(SRC_FILE)" "$(DEST_FILE)"; \
+	fi
+
+%_clean:
+	if [ -f "$(BAK_FILE)" ]; then rm -v "$(BAK_FILE)"; fi
+
+%_diff:
+	$(divider)
+	printf '%-20s%s\n' "$(SRC_FILE)" "$(DEST_FILE)"
+	-diff "$(DEST_FILE)" "$(SRC_FILE)"
 
 #==============================================================================
 # bash
@@ -36,22 +41,16 @@ diff:  $(diff_targets)
 bashrc%: SRC_FILE = ./bash/bashrc
 bashrc%: DEST_FILE = $(HOME)/.bashrc
 bashrc%: BAK_FILE = $(DEST_FILE).bak
-bashrc_build:
-	$(_build)
-bashrc_clean:
-	$(_clean)
-bashrc_diff:
-	$(_diff)
+bashrc.build: bashrc_build
+bashrc.clean: bashrc_clean
+bashrc.diff:  bashrc_diff
 
 bash_profile%: SRC_FILE = ./bash/bash_profile
 bash_profile%: DEST_FILE = $(HOME)/.bash_profile
 bash_profile%: BAK_FILE = $(DEST_FILE).bak
-bash_profile_build:
-	$(_build)
-bash_profile_clean:
-	$(_clean)
-bash_profile_diff:
-	$(_diff)
+bash_profile.build: bash_profile_build
+bash_profile.clean: bash_profile_clean
+bash_profile.diff:  bash_profile_diff
 
 #==============================================================================
 # git
@@ -59,22 +58,16 @@ bash_profile_diff:
 gitconfig%: SRC_FILE = ./git/gitconfig
 gitconfig%: DEST_FILE = $(HOME)/.gitconfig
 gitconfig%: BAK_FILE = $(DEST_FILE).bak
-gitconfig_build:
-	$(_build)
-gitconfig_clean:
-	$(_clean)
-gitconfig_diff:
-	$(_diff)
+gitconfig.build: gitconfig_build
+gitconfig.clean: gitconfig_clean
+gitconfig.diff:  gitconfig_diff
 
 gitignore%: SRC_FILE = ./git/gitignore
 gitignore%: DEST_FILE = $(HOME)/.gitignore
 gitignore%: BAK_FILE = $(DEST_FILE).bak
-gitignore_build:
-	$(_build)
-gitignore_clean:
-	$(_clean)
-gitignore_diff:
-	$(_diff)
+gitignore.build: gitignore_build
+gitignore.clean: gitignore_clean
+gitignore.diff:  gitignore_diff
 
 #==============================================================================
 # readline
@@ -82,12 +75,9 @@ gitignore_diff:
 inputrc%: SRC_FILE = ./readline/inputrc
 inputrc%: DEST_FILE = $(HOME)/.inputrc
 inputrc%: BAK_FILE = $(DEST_FILE).bak
-inputrc_build:
-	$(_build)
-inputrc_clean:
-	$(_clean)
-inputrc_diff:
-	$(_diff)
+inputrc.build: inputrc_build
+inputrc.clean: inputrc_clean
+inputrc.diff:  inputrc_diff
 
 #==============================================================================
 # vim
@@ -95,12 +85,9 @@ inputrc_diff:
 vimrc%: SRC_FILE = ./vim/vimrc
 vimrc%: DEST_FILE = $(HOME)/.vimrc
 vimrc%: BAK_FILE = $(DEST_FILE).bak
-vimrc_build:
-	$(_build)
-vimrc_clean:
-	$(_clean)
-vimrc_diff:
-	$(_diff)
+vimrc.build: vimrc_build
+vimrc.clean: vimrc_clean
+vimrc.diff:  vimrc_diff
 
 #==============================================================================
 # tmux
@@ -108,9 +95,6 @@ vimrc_diff:
 tmux.conf%: SRC_FILE = ./tmux/tmux.conf
 tmux.conf%: DEST_FILE = $(HOME)/.tmux.conf
 tmux.conf%: BAK_FILE = $(DEST_FILE).bak
-tmux.conf_build:
-	$(_build)
-tmux.conf_clean:
-	$(_clean)
-tmux.conf_diff:
-	$(_diff)
+tmux.conf.build: tmux.conf_build
+tmux.conf.clean: tmux.conf_clean
+tmux.conf.diff:  tmux.conf_diff
