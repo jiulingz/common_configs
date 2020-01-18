@@ -63,11 +63,11 @@ autocmd FileType sml,html map <buffer> ,C :s/^\([/(]\*\\|<!--\) \(.*\) \(\*[/)]\
 
 " FileType specific comments (one end)
 autocmd FileType c,cpp,java,arm	  map <buffer> ,c :s/^/\/\//<CR> <Esc>:nohlsearch <CR>
-autocmd FileType python,sh,make map <buffer> ,c :s/^/#/<CR> <Esc>:nohlsearch <CR>
+autocmd FileType python,sh,make,conf map <buffer> ,c :s/^/#/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType vim map <buffer> ,c :s/^/\"/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType sql map <buffer> ,c :s/^/--/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType tex map <buffer> ,c :s/^/%/<CR> <Esc>:nohlsearch <CR>
-autocmd FileType c,cpp,java,python,sh,make,vim,sql,tex,arm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
+autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
 
 "==============================================================================
 " Utilities
