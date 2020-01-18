@@ -8,9 +8,13 @@ diff_targets  = $(addsuffix .diff,  $(targets))
 #==============================================================================
 # batch operation
 #==============================================================================
-.PHONY: all build $(build_targets) clean $(clean_targets) diff $(diff_targets)
-all:
-	echo Please specify target
+.PHONY: default build $(build_targets) clean $(clean_targets) diff $(diff_targets)
+default:
+	echo Targets:
+	echo '' build clean diff
+	echo '' $(build_targets)
+	echo '' $(clean_targets)
+	echo '' $(addsuffix ' ', $(diff_targets))
 
 build: $(build_targets)
 clean: $(clean_targets)
