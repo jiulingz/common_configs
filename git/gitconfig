@@ -13,6 +13,8 @@
 	rs = restore --staged
 	lg = log --graph
 	lgs = log --graph --show-signature
+	gc = git gc --aggressive --prune=now
+	untrack = update-index --assume-unchanged
 [user]
 	email = jolinzhou90@gmail.com
 	name = jiulingz
