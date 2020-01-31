@@ -89,15 +89,19 @@ fi
 #==============================================================================
 if grep -q Microsoft /proc/version; then
 	function remount () {
-		local WORK_DIR='/mnt/c/Users/ecdeo/Workspace'
 		cd $HOME
 		sudo umount /mnt/c
 		sudo mount -t drvfs C: /mnt/c -o metadata,uid=1000,gid=1000,umask=0022,fmask=0011
-		find $RESERVED_DIR -type f -exec chmod 640 {} +
+
+		local USER_DIR=(Workspace Downloads Documents)
+		for i in "${USER_DIR[@]}"; do chmod -R u-x+rwX,g-wx+rX,o-rwx "$HOME/$i"; done
+
 		cd - > /dev/null
 	}
 	function mmount () {
 		sudo mount -t drvfs C: /mnt/c -o metadata,uid=1000,gid=1000,umask=0022,fmask=0011
-		find $RESERVED_DIR -type f -exec chmod 640 {} +
+
+		local USER_DIR=(Workspace Downloads Documents)
+		for i in "${USER_DIR[@]}"; do chmod -R u-x+rwX,g-wx+rX,o-rwx "$HOME/$i"; done
 	}
 fi
