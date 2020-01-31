@@ -45,14 +45,14 @@ filetype plugin on
 
 " FileType specific definitions
 autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-autocmd BufNewFile,BufRead *.S setlocal filetype=arm
+autocmd BufNewFile,BufRead *.S setlocal filetype=asm
 autocmd BufNewFile,BufRead *.lds setlocal filetype=ld
 autocmd BufNewFile,BufRead *.sig,*.cm setlocal filetype=sml
 autocmd FileType text,markdown setlocal spell
-autocmd FileType python,c,cpp,java,sml,tex,systemverilog,asm,markdown setlocal expandtab
+autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown setlocal expandtab
 autocmd FileType sml    setlocal shiftwidth=2 softtabstop=2 tabstop=2 textwidth=0
 autocmd FileType systemverilog    setlocal shiftwidth=2 softtabstop=2 tabstop=2
-autocmd FileType arm    setlocal shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab
+autocmd FileType arm,asm    setlocal shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab
 autocmd FileType c,cpp      setlocal syntax+=.doxygen
 autocmd FileType c,cpp setlocal cindent cinoptions=g1,h2,N-s,E-s,i2s,+2s,(0,u0,U1,w1,W2s,ks
 
@@ -62,12 +62,12 @@ autocmd FileType html  map <buffer> ,c :s/^\(.*\)$/\/\* \1 \*\//<CR> <Esc>:nohls
 autocmd FileType sml,html map <buffer> ,C :s/^\([/(]\*\\|<!--\) \(.*\) \(\*[/)]\\|-->\)$/\2/<CR> <Esc>:nohlsearch<CR>
 
 " FileType specific comments (one end)
-autocmd FileType c,cpp,java,arm	  map <buffer> ,c :s/^/\/\//<CR> <Esc>:nohlsearch <CR>
+autocmd FileType c,cpp,java,arm,asm	  map <buffer> ,c :s/^/\/\//<CR> <Esc>:nohlsearch <CR>
 autocmd FileType python,sh,make,conf map <buffer> ,c :s/^/#/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType vim map <buffer> ,c :s/^/\"/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType sql map <buffer> ,c :s/^/--/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType tex map <buffer> ,c :s/^/%/<CR> <Esc>:nohlsearch <CR>
-autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
+autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm,asm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
 
 "==============================================================================
 " Utilities
