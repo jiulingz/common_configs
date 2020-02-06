@@ -11,6 +11,7 @@
 # alias
 #==============================================================================
 alias ls='ls --color=auto'
+alias grep='grep --color=auto -n -T'
 
 alias ll='ls -l'
 alias la='ls -A'
