@@ -10,51 +10,58 @@ endif
 "==============================================================================
 " Edit settings
 "==============================================================================
-set nobackup				" do not keep a backup file, use versions instead
-set hlsearch				" highlight the last used search pattern
-set undofile	        	" keep an undo file (undo changes after closing)
-set nocompatible			" no backwards-compatible vi mode
-set background=dark			" use dark background
-set mouse=a					" always enables mouse
-set number					" display line number on the left
-set ruler					" display cursor position
-set wildmenu				" better command line completion
-set wildmode=longest,list		" better unix-like tab completion
-set backspace=indent,eol,start	" allow backspacing over autoindent, line breaks and start of insert action
-set ignorecase				" use case insensitive search
-set smartcase				" except using capital letters
-set shiftwidth=4			" affects >>, <<, ==
-set softtabstop=4			" when pressing <BS>, delete 4 spaces
-set tabstop=4				" change tab width to 4 spaces
-set smartindent				" indent according to filetype
-set autoindent				" auto indent on new lines
-set nostartofline			" vertical movement preserves horizontal position
-set wrap					" visually wrap lines
-set linebreak				" wraps at linebreak
-set showcmd					" show command as they are typed in
+syntax on
+set number			" display line number on the left
+set wrap			" visually wrap lines
+set linebreak			" line wrap at `breakat` instead of last character
+set background=dark		" use dark background
+set mouse=a			" always enables mouse
+set smartindent                 " smart autoindenting
+set fileencoding=utf-8		" utf-8 encoding
+set encoding=utf-8		" utf-8 encoding
+set wildmenu			" better command line completion
+set wildmode=longest,list	" better unix-like tab completion
 set clipboard=unnamedplus	" clipboard support
+"set termguicolors		" true colors
+set laststatus=1		" no status when only 1 window
+set backspace=indent,eol,start	" allow backspacing over autoindent, line breaks and start of insert action
+set nostartofline		" vertical goto preserves horizontal position
+set ignorecase			" use case insensitive search
+set smartcase			" except using capital letters
+set guicursor+=o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175
+
+"==============================================================================
+" Backup and undo
+"==============================================================================
+if empty($XDG_DATA_HOME)
+	let $XDG_DATA_HOME = $HOME . '/.local/share'
+endif
+set backupdir=$XDG_DATA_HOME/nvim/backup
+set backup			" keep a backup file (restore to previous version)
+if has('persistent_undo')
+	set undofile		" keep an undo file (undo changes after closing)
+endif
 
 "==============================================================================
 " FileType
 "==============================================================================
-" Enable filetype detection and syntax highlighting
-syntax on
-filetype on
-filetype indent on
-filetype plugin on
-
-" FileType specific definitions
-autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+" FileType detection
 autocmd BufNewFile,BufRead *.S setlocal filetype=asm
 autocmd BufNewFile,BufRead *.lds setlocal filetype=ld
 autocmd BufNewFile,BufRead *.sig,*.cm setlocal filetype=sml
-autocmd FileType text,markdown setlocal spell
+autocmd BufNewFile,BufRead *.cls setlocal filetype=tex
+
+" Strip whitespace from end of lines when writing file
+autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm autocmd BufWritePre * :%s/\s\+$//e
+" Strip empty line from end of files when writing file
+autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm autocmd BufWritePre * :%s/\($\n\s*\)\+\%$//e
+
+" FileType specific format
 autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown setlocal expandtab
 autocmd FileType sml    setlocal shiftwidth=2 softtabstop=2 tabstop=2 textwidth=0
 autocmd FileType systemverilog    setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType arm,asm    setlocal shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab
-autocmd FileType c,cpp      setlocal syntax+=.doxygen
-autocmd FileType c,cpp setlocal cindent cinoptions=g1,h2,N-s,E-s,i2s,+2s,(0,u0,U1,w1,W2s,ks
+autocmd FileType c,cpp setlocal syntax+=.doxygen cindent cinoptions=g2,h2,N-s,E-s,i2s,+2s,(0,u0,U1,w1,W2s,ks
 
 " FileType specific comments (both ends)
 autocmd FileType sml   map <buffer> ,c :s/^\(.*\)$/\(\* \1 \*\)/<CR> <Esc>:nohlsearch<CR>
@@ -69,22 +76,27 @@ autocmd FileType sql map <buffer> ,c :s/^/--/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType tex map <buffer> ,c :s/^/%/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm,asm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
 
+" FileType specific folding mathods
+autocmd FileType c,cpp,java,tex,vim,xml,html setlocal foldmethod=syntax
+autocmd FileType python setlocal foldmethod=indent
+
+" FileType specific settings
+autocmd FileType text,markdown setlocal spell
+
 "==============================================================================
 " Utilities
 "==============================================================================
-" Strip whitespace from end of lines when writing file
-autocmd BufWritePre * :%s/\s\+$//e
+" last-position-jump
+autocmd BufReadPost *
+	\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+	\ |   exe "normal! g`\""
+	\ | endif
 
 " Create directory when save
 autocmd BufWritePre *
 	\ if !isdirectory(expand("<afile>:h")) |
 	\ call mkdir(expand("<afile>:h"), "p") |
 	\ endif
-
-" Cursor shape
-let &t_SI = "\<esc>[5 q"
-let &t_SR = "\<esc>[3 q"
-let &t_EI = "\<esc>[2 q"
 
 " Key mapping
 :inoremap <S-Tab> <C-V><Tab>
