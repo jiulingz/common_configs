@@ -73,9 +73,9 @@ umask 0027
 #==============================================================================
 # environment variables
 #==============================================================================
-export EDITOR=vim
-export VISUAL=vim
-export TERM=xterm-256color
+[[ -z $EDITOR ]] && export EDITOR=vim
+[[ -z $VISUAL ]] && export VISUAL=vim
+[[ -z $TERM ]] && export TERM=xterm-256color
 
 #==============================================================================
 # command not found
