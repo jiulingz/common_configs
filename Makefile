@@ -1,6 +1,6 @@
 MAKEFLAGS = s
 
-targets = bashrc bash_profile gitconfig gitignore inputrc vimrc tmux.conf
+targets = bashrc bash_profile gitconfig gitignore inputrc vimrc nvim tmux.conf
 build_targets = $(addsuffix .build, $(targets))
 clean_targets = $(addsuffix .clean, $(targets))
 diff_targets  = $(addsuffix .diff,  $(targets))
@@ -38,6 +38,9 @@ divider = printf "%0.s=" {1..$(shell tput cols)}; printf "\n"
 	$(divider)
 	printf '%-20s%s\n' "$(SRC_FILE)" "$(DEST_FILE)"
 	-diff "$(DEST_FILE)" "$(SRC_FILE)"
+
+%_link:
+	ln -s $(DEST_FILE) $(LINK_FILE)
 
 #==============================================================================
 # bash
@@ -92,6 +95,14 @@ vimrc%: BAK_FILE = $(DEST_FILE).bak
 vimrc.build: vimrc_build
 vimrc.clean: vimrc_clean
 vimrc.diff:  vimrc_diff
+
+nvim%: SRC_FILE = ./vim/init.vim
+nvim%: DEST_FILE = $(HOME)/.config/nvim/init.vim
+nvim%: BAK_FILE = $(DEST_FILE).bak
+nvim%: LINK_FILE = $(HOME)/.nvimrc
+nvim.build: nvimrc_build nvimrc_link
+nvim.clean: nvimrc_clean
+nvim.diff:  nvimrc_diff
 
 #==============================================================================
 # tmux
