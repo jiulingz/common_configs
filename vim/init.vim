@@ -37,6 +37,9 @@ if has('persistent_undo')
 	set undofile		" keep an undo file (undo changes after closing)
 endif
 
+"==============================================================================
+" Vim
+"==============================================================================
 if exists('g:vscode')
 	" skip
 else
@@ -51,9 +54,9 @@ else
 	autocmd BufNewFile,BufRead *.cls setlocal filetype=tex
 
 	" Strip whitespace from end of lines when writing file
-	autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm autocmd BufWritePre * :%s/\s\+$//e
+	autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm,vim autocmd BufWritePre * :%s/\s\+$//e
 	" Strip empty line from end of files when writing file
-	autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm autocmd BufWritePre * :%s/\($\n\s*\)\+\%$//e
+	autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm,vim autocmd BufWritePre * :%s/\($\n\s*\)\+\%$//e
 
 	" FileType specific format
 	autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown setlocal expandtab
@@ -78,9 +81,7 @@ else
 	" FileType specific folding mathods
 	autocmd FileType c,cpp,java,tex,vim,xml,html setlocal foldmethod=syntax
 	autocmd FileType python setlocal foldmethod=indent
-	" unfold all at start
-	autocmd BufRead * normal zR
-
+	autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zR
 
 	" FileType specific settings
 	autocmd FileType text,markdown setlocal spell
