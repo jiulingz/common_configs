@@ -33,10 +33,7 @@ set guicursor+=o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:b
 "==============================================================================
 " Backup and undo
 "==============================================================================
-if empty($XDG_DATA_HOME)
-	let $XDG_DATA_HOME = $HOME . '/.local/share'
-endif
-set backupdir=$XDG_DATA_HOME/nvim/backup
+set backupdir=$HOME/.vim/backup
 set backup			" keep a backup file (restore to previous version)
 if has('persistent_undo')
 	set undofile		" keep an undo file (undo changes after closing)
@@ -79,6 +76,7 @@ autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm,asm map <buffer>
 " FileType specific folding mathods
 autocmd FileType c,cpp,java,tex,vim,xml,html setlocal foldmethod=syntax
 autocmd FileType python setlocal foldmethod=indent
+autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zR
 
 " FileType specific settings
 autocmd FileType text,markdown setlocal spell
