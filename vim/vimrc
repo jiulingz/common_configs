@@ -33,10 +33,7 @@ set guicursor+=o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:b
 "==============================================================================
 " Backup and undo
 "==============================================================================
-if empty($XDG_DATA_HOME)
-	let $XDG_DATA_HOME = $HOME . '/.local/share'
-endif
-set backupdir=$XDG_DATA_HOME/nvim/backup
+set backupdir=$HOME/.vim/backup
 set backup			" keep a backup file (restore to previous version)
 if has('persistent_undo')
 	set undofile		" keep an undo file (undo changes after closing)
