@@ -76,6 +76,7 @@ autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm,asm map <buffer>
 " FileType specific folding mathods
 autocmd FileType c,cpp,java,tex,vim,xml,html setlocal foldmethod=syntax
 autocmd FileType python setlocal foldmethod=indent
+autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zR
 
 " FileType specific settings
 autocmd FileType text,markdown setlocal spell
