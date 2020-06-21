@@ -3,7 +3,7 @@
 #
 
 #==============================================================================
-# temp files
+# temp/cache
 #==============================================================================
 .*.swp
 .*~
@@ -11,6 +11,8 @@
 doxygen_docs/
 doxygen.warn
 cmake-build-debug/
+*.tmp
+.mypy_cache/
 
 #==============================================================================
 # latex
@@ -23,11 +25,17 @@ cmake-build-debug/
 *.synctex.gz
 *.fdb_latexmk
 *.fls
+*.listing
 __latexindent_temp.tex
 
 #==============================================================================
-# IDE config
+# config
 #==============================================================================
 .vscode/
 *.code-workspace
 .idea/
+compile_flags.txt
+.project
+.root
+.lvimrc
+.clang-format
