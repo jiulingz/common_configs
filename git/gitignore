@@ -38,4 +38,3 @@ compile_flags.txt
 .project
 .root
 .lvimrc
-.clang-format
