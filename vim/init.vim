@@ -17,7 +17,7 @@ set encoding=utf-8		" utf-8 encoding
 set wildmenu			" better command line completion
 set wildmode=longest,list	" better unix-like tab completion
 set clipboard=unnamedplus	" clipboard support
-"set termguicolors		" true colors
+set termguicolors		" true colors
 set laststatus=1		" no status when only 1 window
 set backspace=indent,eol,start	" allow backspacing over autoindent, line breaks and start of insert action
 set nostartofline		" vertical goto preserves horizontal position
@@ -60,6 +60,7 @@ else
 
 	" FileType specific format
 	autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown setlocal expandtab
+	autocmd FileType python,c,cpp,java,sml,tex setlocal shiftwidth=4 softtabstop=4 tabstop=4
 	autocmd FileType sml    setlocal shiftwidth=2 softtabstop=2 tabstop=2 textwidth=0
 	autocmd FileType systemverilog    setlocal shiftwidth=2 softtabstop=2 tabstop=2
 	autocmd FileType arm,asm    setlocal shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab
@@ -78,10 +79,13 @@ else
 	autocmd FileType tex map <buffer> ,c :s/^/%/<CR> <Esc>:nohlsearch <CR>
 	autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm,asm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
 
+	" FileType specific format
+	autocmd FileType c,cpp map <buffer> <F3> m1 :%!clang-format<CR> `1
+
 	" FileType specific folding mathods
 	autocmd FileType c,cpp,java,tex,vim,xml,html setlocal foldmethod=syntax
 	autocmd FileType python setlocal foldmethod=indent
-	autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zR
+	autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zi
 
 	" FileType specific settings
 	autocmd FileType text,markdown setlocal spell
@@ -141,6 +145,9 @@ else
 	nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 	nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 	nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+	" language client settings
+	set completeopt-=preview
+	autocmd QuitPre * if &filetype !=# 'qf' | lclose | endif
 
 	" neomake
 	call neomake#configure#automake({
@@ -161,7 +168,6 @@ else
 	let g:neomake_python_enabled_makers = ['python', 'mypy', 'pylint']
 	let g:neomake_markdown_enabled_makers = ['markdownlint']
 	let g:neomake_tex_enabled_makers = ['lacheck']
-	autocmd QuitPre * if &filetype !=# 'qf' | lclose | endif
 
 	" blame-line
 	let g:blameLineUseVirtualText = 1
