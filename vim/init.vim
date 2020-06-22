@@ -37,16 +37,13 @@ if has('persistent_undo')
 	set undofile		" keep an undo file (undo changes after closing)
 endif
 
+
 "==============================================================================
-" Vim
+" FileType
 "==============================================================================
 if exists('g:vscode')
 	" skip
 else
-
-	"==============================================================================
-	" FileType
-	"==============================================================================
 	" FileType detection
 	autocmd BufNewFile,BufRead *.S setlocal filetype=asm
 	autocmd BufNewFile,BufRead *.lds setlocal filetype=ld
@@ -89,28 +86,36 @@ else
 
 	" FileType specific settings
 	autocmd FileType text,markdown setlocal spell
+endif
 
-	"==============================================================================
-	" Utilities
-	"==============================================================================
+"==============================================================================
+" Utilities
+"==============================================================================
+if exists('g:vscode')
+	" skip
+else
 	" last-position-jump
 	autocmd BufReadPost *
-		\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-		\ |   exe "normal! g`\""
-		\ | endif
+				\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+				\ |   exe "normal! g`\""
+				\ | endif
 
 	" Create directory when save
 	autocmd BufWritePre *
-		\ if !isdirectory(expand("<afile>:h")) |
-		\ call mkdir(expand("<afile>:h"), "p") |
-		\ endif
+				\ if !isdirectory(expand("<afile>:h")) |
+				\ call mkdir(expand("<afile>:h"), "p") |
+				\ endif
 
 	" Key mapping
 	:inoremap <S-Tab> <C-V><Tab>
+endif
 
-	"==============================================================================
-	" Plugins
-	"==============================================================================
+"==============================================================================
+" Plugins
+"==============================================================================
+if exists('g:vscode')
+	" skip
+else
 	call plug#begin($XDG_DATA_HOME.'/plugged')
 	Plug 'embear/vim-localvimrc'
 	Plug 'autozimu/LanguageClient-neovim', {
