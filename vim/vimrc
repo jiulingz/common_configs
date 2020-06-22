@@ -49,12 +49,13 @@ autocmd BufNewFile,BufRead *.sig,*.cm setlocal filetype=sml
 autocmd BufNewFile,BufRead *.cls setlocal filetype=tex
 
 " Strip whitespace from end of lines when writing file
-autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm autocmd BufWritePre * :%s/\s\+$//e
+autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm,vim autocmd BufWritePre * :%s/\s\+$//e
 " Strip empty line from end of files when writing file
-autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm autocmd BufWritePre * :%s/\($\n\s*\)\+\%$//e
+autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown,markdown,arm,asm,vim autocmd BufWritePre * :%s/\($\n\s*\)\+\%$//e
 
 " FileType specific format
 autocmd FileType python,c,cpp,java,sml,tex,systemverilog,markdown setlocal expandtab
+autocmd FileType python,c,cpp,java,sml,tex setlocal shiftwidth=4 softtabstop=4 tabstop=4
 autocmd FileType sml    setlocal shiftwidth=2 softtabstop=2 tabstop=2 textwidth=0
 autocmd FileType systemverilog    setlocal shiftwidth=2 softtabstop=2 tabstop=2
 autocmd FileType arm,asm    setlocal shiftwidth=8 softtabstop=8 tabstop=8 noexpandtab
@@ -73,10 +74,13 @@ autocmd FileType sql map <buffer> ,c :s/^/--/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType tex map <buffer> ,c :s/^/%/<CR> <Esc>:nohlsearch <CR>
 autocmd FileType c,cpp,java,python,sh,make,conf,vim,sql,tex,arm,asm map <buffer> ,C :s/^\/\/\\|^--\\|^> \\|^[#"%!;]//<CR> <Esc>:nohlsearch<CR>
 
+" FileType specific format
+autocmd FileType c,cpp map <buffer> <F3> m1 :%!clang-format<CR> `1
+
 " FileType specific folding mathods
 autocmd FileType c,cpp,java,tex,vim,xml,html setlocal foldmethod=syntax
 autocmd FileType python setlocal foldmethod=indent
-autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zR
+autocmd Filetype c,cpp,java,tex,vim,xml,html,python normal zi
 
 " FileType specific settings
 autocmd FileType text,markdown setlocal spell
@@ -86,15 +90,15 @@ autocmd FileType text,markdown setlocal spell
 "==============================================================================
 " last-position-jump
 autocmd BufReadPost *
-	\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-	\ |   exe "normal! g`\""
-	\ | endif
+			\ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+			\ |   exe "normal! g`\""
+			\ | endif
 
 " Create directory when save
 autocmd BufWritePre *
-	\ if !isdirectory(expand("<afile>:h")) |
-	\ call mkdir(expand("<afile>:h"), "p") |
-	\ endif
+			\ if !isdirectory(expand("<afile>:h")) |
+			\ call mkdir(expand("<afile>:h"), "p") |
+			\ endif
 
 " Key mapping
 :inoremap <S-Tab> <C-V><Tab>
