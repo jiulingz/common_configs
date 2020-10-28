@@ -105,4 +105,10 @@ if grep -q Microsoft /proc/version; then
 		local USER_DIR=(Workspace Downloads Documents)
 		for i in "${USER_DIR[@]}"; do chmod -R u-x+rwX,g-wx+rX,o-rwx "$HOME/$i"; done
 	}
+	function perm () {
+		local USER_DIR=(Workspace Downloads Documents)
+		for i in "${USER_DIR[@]}"; do chmod -R u-x+rwX,g-wx+rX,o-rwx "$HOME/$i"; done
+	}
+	eval "$(ssh-agent -s)" > /dev/null
+	eval "$(keychain --agents ssh "$HOME/.ssh/id_ecdsa" 2> /dev/null)"
 fi
