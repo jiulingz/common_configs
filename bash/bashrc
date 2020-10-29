@@ -110,5 +110,5 @@ if grep -q Microsoft /proc/version; then
 		for i in "${USER_DIR[@]}"; do chmod -R u-x+rwX,g-wx+rX,o-rwx "$HOME/$i"; done
 	}
 	eval "$(ssh-agent -s)" > /dev/null
-	eval "$(keychain --agents ssh "$HOME/.ssh/id_ecdsa" 2> /dev/null)"
+	eval "$(keychain --agents ssh "$HOME/.ssh/id_ed25519" 2> /dev/null)"
 fi
